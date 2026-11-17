@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="fr" data-theme="github" data-size="normal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Page interactive et responsive sur les outils PC et mobile pour les personnes déficientes visuelles ou aveugles, avec un test de positionnement de 30 questions illustrées et une vocalisation accessible.">
+  <meta name="theme-color" content="#0d1117">
+  <title>Cap vers le numérique accessible — Outils et test de positionnement</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="questions.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu principal</a>
+
+  <header class="site-header">
+    <div class="wrap header-grid">
+      <div class="header-copy">
+        <p class="eyebrow">Accessibilité numérique • PC &amp; mobile</p>
+        <h1>Cap vers le numérique accessible</h1>
+        <p class="lead">
+          Un parcours clair pour découvrir les outils qui réduisent la fracture numérique
+          des personnes déficientes visuelles ou aveugles, sur ordinateur comme sur téléphone.
+        </p>
+        <p class="small">
+          Page interactive, responsive, à fort contraste, avec vocalisation optionnelle
+          et test de positionnement de 30 questions illustrées.
+        </p>
+      </div>
+
+      <aside class="designer-card" aria-label="Concepteur de la page">
+        <div class="portrait-wrap">
+          <img
+            id="designerPhoto"
+            src="assets/jean-baptiste-khair.jpg"
+            alt="Portrait de Jean-Baptiste Khair, concepteur de la page"
+            width="112"
+            height="112"
+            onerror="this.style.display='none'; document.getElementById('designerFallback').hidden = false;"
+          >
+          <div id="designerFallback" class="portrait-fallback" aria-hidden="true" hidden>JBK</div>
+        </div>
+        <div>
+          <p class="eyebrow">Conception</p>
+          <p class="designer-name">Jean-Baptiste Khair</p>
+          <p class="small contact-lines">
+            <a href="mailto:khairdidact@gmail.com">khairdidact@gmail.com</a><br>
+            <a href="tel:+33767470494">+33 7 67 47 04 94</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <div class="toolbar" role="region" aria-label="Confort de lecture et vocalisation">
+    <div class="wrap toolbar-inner">
+      <button id="themeBtn" class="btn btn-outline" type="button" aria-pressed="false">Thème : GitHub sombre</button>
+      <button id="fontBtn" class="btn btn-outline" type="button">Texte : normal</button>
+      <button id="voiceBtn" class="btn btn-outline" type="button" aria-pressed="false">Voix : désactivée</button>
+      <button id="stopBtn" class="btn btn-outline" type="button">Arrêter la voix</button>
+      <label class="rate-control" for="rate">
+        Vitesse <output id="rateOut" for="rate">1,0×</output>
+      </label>
+      <input id="rate" type="range" min="0.6" max="1.5" step="0.1" value="1" aria-label="Vitesse de lecture vocale">
+    </div>
+  </div>
+
+  <main id="contenu">
+    <section class="wrap intro" aria-labelledby="introTitle">
+      <h2 id="introTitle">Un parcours pour repérer les bons outils</h2>
+      <p>
+        Cette page présente les grandes familles d’aides techniques disponibles sur PC et
+        sur téléphone : lecteurs d’écran, grossissement, OCR, braille, commande vocale,
+        reconnaissance d’images, réglages d’accessibilité et bonnes pratiques du web.
+      </p>
+      <ul class="feature-list">
+        <li><strong>Outils PC et mobile</strong> classés par catégories.</li>
+        <li><strong>Vocalisation</strong> des questions, réponses et retours, avec réglage de vitesse.</li>
+        <li><strong>Deux thèmes</strong> : GitHub sombre et contraste élevé noir/jaune.</li>
+        <li><strong>Navigation clavier</strong>, focus visible et zones tactiles adaptées.</li>
+      </ul>
+    </section>
+
+    <section class="wrap resources" aria-labelledby="resourcesTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Boîte à outils</p>
+          <h2 id="resourcesTitle">Outils disponibles sur PC et téléphone</h2>
+        </div>
+      </div>
+      <p class="section-intro">
+        Les outils ci-dessous ne remplacent pas une évaluation individuelle, mais ils donnent
+        un panorama concret des solutions souvent utilisées par les personnes aveugles ou
+        malvoyantes. Les noms de logiciels sont indicatifs et peuvent évoluer.
+      </p>
+
+      <div class="resource-grid">
+        <details class="resource-card">
+          <summary>Lecteurs d’écran sur ordinateur</summary>
+          <ul>
+            <li><strong>NVDA</strong> — lecteur d’écran gratuit et open source pour Windows.</li>
+            <li><strong>JAWS</strong> — lecteur d’écran professionnel pour Windows.</li>
+            <li><strong>Narrator</strong> — lecteur d’écran intégré à Windows.</li>
+            <li><strong>VoiceOver</strong> — lecteur d’écran intégré à macOS.</li>
+            <li><strong>Orca</strong> — lecteur d’écran libre pour Linux.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>Lecteurs d’écran sur téléphone</summary>
+          <ul>
+            <li><strong>VoiceOver</strong> — intégré à iPhone et iPad.</li>
+            <li><strong>TalkBack</strong> — intégré aux appareils Android.</li>
+            <li><strong>Raccourcis d’accessibilité</strong> — activation rapide par bouton ou geste.</li>
+            <li><strong>Gestes tactiles</strong> — explorer, sélectionner puis activer par double tap.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>Grossissement et confort visuel</summary>
+          <ul>
+            <li><strong>Loupe Windows</strong> — agrandissement de l’écran et suivi du focus.</li>
+            <li><strong>Zoom macOS</strong> — zoom plein écran ou loupe.</li>
+            <li><strong>Zoom iOS</strong> — agrandissement intégré à l’iPhone et l’iPad.</li>
+            <li><strong>Magnification Android</strong> — loupe et agrandissement système.</li>
+            <li><strong>ZoomText</strong> — solution de grossissement et de lecture.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>OCR, lecture de documents et PDF</summary>
+          <ul>
+            <li><strong>OCR</strong> — transforme une image de texte en texte numérique sélectionnable.</li>
+            <li><strong>Seeing AI</strong> — lecture de textes, reconnaissance d’objets et de personnes.</li>
+            <li><strong>Google Lookout</strong> — aide à la lecture et à la reconnaissance visuelle.</li>
+            <li><strong>Adobe Acrobat Pro</strong> — création et vérification de PDF balisés.</li>
+            <li><strong>Word / LibreOffice</strong> — styles de titres, tableaux structurés et textes alternatifs.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>Braille et retour tactile</summary>
+          <ul>
+            <li><strong>Plage braille</strong> — afficheur tactile connecté à l’ordinateur ou au téléphone.</li>
+            <li><strong>BRLTTY</strong> — pilote braille libre sous Linux et autres systèmes.</li>
+            <li><strong>BrailleBack</strong> — support braille sur Android avec TalkBack.</li>
+            <li><strong>Impression braille</strong> — mise en page et transcription de documents.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>Commande vocale et reconnaissance</summary>
+          <ul>
+            <li><strong>Voice Control</strong> — commande vocale intégrée à iOS et macOS.</li>
+            <li><strong>Voice Access</strong> — commande vocale sur Android.</li>
+            <li><strong>Dragon</strong> — dictée et pilotage professionnel sur ordinateur.</li>
+            <li><strong>Reconnaissance vocale Windows</strong> — dictée et commandes système.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>Aide à distance et reconnaissance d’images</summary>
+          <ul>
+            <li><strong>Be My Eyes</strong> — mise en relation vidéo avec des bénévoles ou une assistance.</li>
+            <li><strong>Envision</strong> — reconnaissance d’images et lecture de documents.</li>
+            <li><strong>Google Lens</strong> — identification de textes, objets et scènes.</li>
+            <li><strong>Applications de description</strong> — accès à une aide humaine ou automatique.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>Web, formulaires et navigation clavier</summary>
+          <ul>
+            <li><strong>Touche Tab</strong> — parcours des liens, boutons et champs.</li>
+            <li><strong>Attribut alt</strong> — description textuelle des images.</li>
+            <li><strong>Étiquettes de formulaires</strong> — association label/champ et messages d’erreur explicites.</li>
+            <li><strong>WCAG</strong> — règles internationales d’accessibilité web, niveau AA recommandé.</li>
+            <li><strong>Contraste 4,5:1</strong> — minimum courant pour un texte normal.</li>
+          </ul>
+        </details>
+
+        <details class="resource-card">
+          <summary>Réglages système utiles</summary>
+          <ul>
+            <li><strong>Taille du texte</strong> — agrandissement sans perte de lisibilité.</li>
+            <li><strong>Contraste élevé</strong> — couleurs simplifiées et bordures renforcées.</li>
+            <li><strong>Réduire les animations</strong> — limite les mouvements et effets.</li>
+            <li><strong>Sous-titres et transcriptions</strong> — accès aux contenus audio et vidéo.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <section class="wrap quiz-section" aria-labelledby="quizTitle">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Test de positionnement</p>
+          <h2 id="quizTitle">30 questions illustrées</h2>
+        </div>
+        <p id="scoreDisplay" class="score-badge" aria-live="polite">Score : 0 / 30</p>
+      </div>
+
+      <div class="progress-block">
+        <div class="progress-meta">
+          <span id="questionCounter">Question 1 sur 30</span>
+          <span id="progressPercent">0 %</span>
+        </div>
+        <div
+          class="progress-track"
+          id="progressBar"
+          role="progressbar"
+          aria-labelledby="questionCounter"
+          aria-valuemin="0"
+          aria-valuemax="30"
+          aria-valuenow="0"
+        >
+          <span id="progressFill"></span>
+        </div>
+      </div>
+
+      <article id="quizCard" class="card quiz-card">
+        <figure class="illustration" id="illustration" aria-hidden="true"></figure>
+
+        <form id="quizForm" novalidate>
+          <fieldset>
+            <legend id="questionLegend" tabindex="-1">Chargement…</legend>
+            <div id="options" class="options"></div>
+          </fieldset>
+
+          <div id="feedback" class="feedback" role="status" aria-live="polite" tabindex="-1" hidden></div>
+
+          <div class="quiz-actions">
+            <button id="validateBtn" class="btn btn-primary" type="submit">Valider ma réponse</button>
+            <button id="nextBtn" class="btn btn-primary" type="button" hidden>Question suivante</button>
+            <button id="listenBtn" class="btn btn-outline" type="button">Écouter la question</button>
+          </div>
+        </form>
+      </article>
+
+      <article id="results" class="card results" hidden aria-labelledby="resultsTitle">
+        <p class="eyebrow">Résultat du positionnement</p>
+        <h3 id="resultsTitle" tabindex="-1">Votre profil</h3>
+        <p class="result-score" id="resultsScore">0 / 30</p>
+        <p class="result-level" id="resultsLevel"></p>
+        <p id="resultsText"></p>
+        <ul id="recommendations" class="recommendations"></ul>
+        <button id="restartBtn" class="btn btn-primary" type="button">Refaire le test</button>
+      </article>
+
+      <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="eyebrow">Concepteur</p>
+        <p><strong>Jean-Baptiste Khair</strong></p>
+        <p class="small">
+          <a href="mailto:khairdidact@gmail.com">khairdidact@gmail.com</a><br>
+          <a href="tel:+33767470494">+33 7 67 47 04 94</a>
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">Accessibilité</p>
+        <p class="small">
+          Page responsive, navigation clavier, contrastes renforcés, vocalisation optionnelle
+          et informations jamais transmises par la couleur seule.
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
