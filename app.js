@@ -10,14 +10,16 @@
     score: 0,
     validated: false,
     voiceEnabled: false,
+    hoverEnabled: false,
     rate: 1,
-    currentOptions: [] // Stocke les options mélangées pour la question en cours
+    currentOptions: []
   };
 
   const els = {
     themeBtn: document.getElementById("themeBtn"),
     fontBtn: document.getElementById("fontBtn"),
     voiceBtn: document.getElementById("voiceBtn"),
+    hoverBtn: document.getElementById("hoverBtn"),
     stopBtn: document.getElementById("stopBtn"),
     rate: document.getElementById("rate"),
     rateOut: document.getElementById("rateOut"),
@@ -50,7 +52,6 @@
   const speechSupported =
     "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
 
-  // Fonction pour mélanger un tableau (Fisher-Yates)
   function shuffleArray(array) {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -152,7 +153,6 @@
   }
 
   function questionSpeechText(question) {
-    // Utilise les options mélangées pour la lecture vocale
     const options = state.currentOptions
       .map((option, index) => `Réponse ${index + 1} : ${option.text}.`)
       .join(" ");
@@ -227,7 +227,6 @@
     els.questionLegend.textContent = question.question;
     els.options.replaceChildren();
 
-    // Préparation et mélange des options
     const originalOptions = question.options.map((text, index) => ({
       text: text,
       isCorrect: index === question.correct
@@ -235,7 +234,6 @@
     
     state.currentOptions = shuffleArray(originalOptions);
 
-    // Affichage des options mélangées
     state.currentOptions.forEach((option, optionIndex) => {
       const wrapper = document.createElement("div");
       wrapper.className = "option";
@@ -312,7 +310,6 @@
       input.disabled = true;
     });
 
-    // Mise à jour visuelle des bonnes et mauvaises réponses selon le nouvel ordre
     els.options.querySelectorAll(".option").forEach((optionEl, idx) => {
       const opt = state.currentOptions[idx];
       optionEl.classList.toggle("is-correct", opt.isCorrect);
@@ -465,6 +462,9 @@
     els.rateOut.textContent = formatRate(state.rate);
   }
 
+  let hoverTimeout;
+  let lastHoveredElement = null;
+
   function bindEvents() {
     els.themeBtn.addEventListener("click", () => {
       const nextTheme =
@@ -502,6 +502,21 @@
         setStatus("Vocalisation activée.");
       } else {
         setStatus("Vocalisation désactivée.");
+      }
+    });
+
+    els.hoverBtn.addEventListener("click", () => {
+      if (!speechSupported) {
+        setStatus("La synthèse vocale n’est pas disponible dans ce navigateur.");
+        return;
+      }
+      state.hoverEnabled = !state.hoverEnabled;
+      els.hoverBtn.setAttribute("aria-pressed", String(state.hoverEnabled));
+      els.hoverBtn.textContent = state.hoverEnabled ? "Survol : activé" : "Survol : désactivé";
+      setStatus(state.hoverEnabled ? "Lecture au survol activée." : "Lecture au survol désactivée.");
+      if (!state.hoverEnabled) {
+        window.speechSynthesis.cancel();
+        lastHoveredElement = null;
       }
     });
 
@@ -547,6 +562,30 @@
       setStatus("Lecture de la question en cours.");
     });
 
+    // Gestion du survol de la souris pour lire les textes
+    document.addEventListener("mouseover", (e) => {
+      if (!state.hoverEnabled) return;
+
+      // Cible les balises de texte principales
+      const textEl = e.target.closest("p, li, h1, h2, h3, legend, label, summary, a, .option");
+
+      // Évite de relire le même élément en boucle, et ignore la barre d'outils
+      if (!textEl || textEl === lastHoveredElement || textEl.closest(".toolbar")) {
+        return;
+      }
+
+      lastHoveredElement = textEl;
+      clearTimeout(hoverTimeout);
+
+      // Petit délai de 400ms pour ne pas déclencher si la souris traverse l'écran
+      hoverTimeout = setTimeout(() => {
+        const textToRead = textEl.textContent.trim();
+        if (textToRead) {
+          speak(textToRead, true);
+        }
+      }, 400);
+    });
+
     if (els.designerPhoto) {
       const showFallback = () => {
         els.designerPhoto.hidden = true;
@@ -564,9 +603,11 @@
 
     if (!speechSupported) {
       els.voiceBtn.disabled = true;
+      els.hoverBtn.disabled = true;
       els.stopBtn.disabled = true;
       els.listenBtn.disabled = true;
       els.voiceBtn.textContent = "Voix : indisponible";
+      els.hoverBtn.textContent = "Survol : indisponible";
     }
   }
 
