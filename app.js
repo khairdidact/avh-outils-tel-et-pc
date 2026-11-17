@@ -10,7 +10,8 @@
     score: 0,
     validated: false,
     voiceEnabled: false,
-    rate: 1
+    rate: 1,
+    currentOptions: [] // Stocke les options mélangées pour la question en cours
   };
 
   const els = {
@@ -48,6 +49,16 @@
 
   const speechSupported =
     "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+
+  // Fonction pour mélanger un tableau (Fisher-Yates)
+  function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
 
   function iconSVG(name) {
     const icons = {
@@ -141,8 +152,9 @@
   }
 
   function questionSpeechText(question) {
-    const options = question.options
-      .map((option, index) => `Réponse ${index + 1} : ${option}.`)
+    // Utilise les options mélangées pour la lecture vocale
+    const options = state.currentOptions
+      .map((option, index) => `Réponse ${index + 1} : ${option.text}.`)
       .join(" ");
 
     return `${question.question} ${options} Choisissez une réponse, puis validez.`;
@@ -215,7 +227,16 @@
     els.questionLegend.textContent = question.question;
     els.options.replaceChildren();
 
-    question.options.forEach((option, optionIndex) => {
+    // Préparation et mélange des options
+    const originalOptions = question.options.map((text, index) => ({
+      text: text,
+      isCorrect: index === question.correct
+    }));
+    
+    state.currentOptions = shuffleArray(originalOptions);
+
+    // Affichage des options mélangées
+    state.currentOptions.forEach((option, optionIndex) => {
       const wrapper = document.createElement("div");
       wrapper.className = "option";
 
@@ -227,7 +248,7 @@
 
       const label = document.createElement("label");
       label.htmlFor = input.id;
-      label.textContent = option;
+      label.textContent = option.text;
 
       wrapper.append(input, label);
       els.options.append(wrapper);
@@ -276,10 +297,11 @@
     }
 
     const question = QUESTIONS[state.index];
-    const answer = Number(selected.value);
-    const isCorrect = answer === question.correct;
+    const displayIndex = Number(selected.value);
+    const selectedOption = state.currentOptions[displayIndex];
+    const isCorrect = selectedOption.isCorrect;
 
-    state.answers[state.index] = answer;
+    state.answers[state.index] = displayIndex;
     state.validated = true;
 
     if (isCorrect) {
@@ -290,15 +312,17 @@
       input.disabled = true;
     });
 
-    els.options.querySelectorAll(".option").forEach((option, index) => {
-      option.classList.toggle("is-correct", index === question.correct);
-      option.classList.toggle("is-wrong", index === answer && !isCorrect);
+    // Mise à jour visuelle des bonnes et mauvaises réponses selon le nouvel ordre
+    els.options.querySelectorAll(".option").forEach((optionEl, idx) => {
+      const opt = state.currentOptions[idx];
+      optionEl.classList.toggle("is-correct", opt.isCorrect);
+      optionEl.classList.toggle("is-wrong", idx === displayIndex && !isCorrect);
     });
 
-    const correctAnswer = question.options[question.correct];
+    const correctAnswerText = state.currentOptions.find(o => o.isCorrect).text;
     const feedbackText = isCorrect
       ? `Bonne réponse. ${question.explanation}`
-      : `Réponse incorrecte. La bonne réponse est : ${correctAnswer}. ${question.explanation}`;
+      : `Réponse incorrecte. La bonne réponse est : ${correctAnswerText}. ${question.explanation}`;
 
     els.feedback.className = `feedback ${isCorrect ? "correct" : "wrong"}`;
     els.feedback.textContent = feedbackText;
